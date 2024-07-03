@@ -7,12 +7,14 @@ public class TouchManager : MonoBehaviour
     private float dragDistance;
 
     private PlayerManager playerManager;
+    public SpriteRenderer sr;
 
     void Start()
     {
         dragDistance = Screen.height * 15 / 100;
 
         playerManager = GetComponent<PlayerManager>();
+        sr = playerManager.gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -42,11 +44,15 @@ public class TouchManager : MonoBehaviour
                         {   //Right swipe
                             Debug.Log("Right Swipe");
                             playerManager.MoveBlock(transform.right);
+
+                            sr.flipX = true;
                         }
                         else
                         {   //Left swipe
                             Debug.Log("Left Swipe");
                             playerManager.MoveBlock(-transform.right);
+
+                            sr.flipX = false;
                         }
                     }
                     else
@@ -55,11 +61,15 @@ public class TouchManager : MonoBehaviour
                         {   //Up swipe
                             Debug.Log("Up Swipe");
                             playerManager.MoveBlock(transform.up);
+
+                            sr.flipY = true;
                         }
                         else
                         {   //Down swipe
                             Debug.Log("Down Swipe");
                             playerManager.MoveBlock(-transform.up);
+
+                            sr.flipY = false;
                         }
                     }
                 }

@@ -48,8 +48,38 @@ public class PlayerManager : MonoBehaviour
 
                 Vector2 pos = transform.position;
                 transform.position = new Vector2(Convert.ToInt16(pos.x), Convert.ToInt16(pos.y));
+
+                // Check for winning here
+                if (!IsThereSpaceToMove())
+                    CheckWin();
+
             }
         }
+    }
+
+    public void CheckWin()
+    {
+        if (levelManager.AllPointsCollected())
+        {
+            Debug.Log("It's A Win");
+        }
+        else
+        {
+            Debug.Log("You Lost");
+        }
+    }
+
+    bool IsThereSpaceToMove()
+    {
+        int up = GetMovableBlocks(transform.up);
+        int down = GetMovableBlocks(-transform.up);
+        int right = GetMovableBlocks(transform.right);
+        int left = GetMovableBlocks(-transform.right);
+
+        if (up == 0 && down == 0 && left == 0 && right == 0)
+            return false;
+        else 
+            return true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -68,12 +98,8 @@ public class PlayerManager : MonoBehaviour
     {
         if (!blockMovement)
         {
-            points.SetActive(false);
-
             blocks = GetMovableBlocks(dir);
             finalPos = transform.position;
-
-            points.SetActive(true);
 
             if (blocks != 0)
             {
@@ -105,8 +131,10 @@ public class PlayerManager : MonoBehaviour
         RaycastHit2D hit;
         int blocks = 0;
 
+        points.SetActive(false);
+
         hit = Physics2D.Raycast(transform.position, dir, Mathf.Infinity);
-        if(hit.collider != null)
+        if (hit.collider != null)
         {
             Vector2 startPos = transform.position;
             Vector2 finalPos = hit.collider.transform.position;
@@ -122,6 +150,9 @@ public class PlayerManager : MonoBehaviour
                 blocks = Convert.ToInt16(temp.y);
             }
         }
+
+        points.SetActive(true);
+
         return (blocks < 0) ? (blocks + 1) : (blocks - 1);
     }
 }

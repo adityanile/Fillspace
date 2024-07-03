@@ -43,4 +43,12 @@ public class LevelManager : MonoBehaviour
     {
         takenPoints++;
     }
+
+    public bool AllPointsCollected()
+    {
+        if(takenPoints == maxPoints)
+            return true;
+        else
+            return false; 
+    }
 }
