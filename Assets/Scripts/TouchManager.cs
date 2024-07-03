@@ -42,14 +42,12 @@ public class TouchManager : MonoBehaviour
                     {
                         if ((lp.x > fp.x))
                         {   //Right swipe
-                            Debug.Log("Right Swipe");
                             playerManager.MoveBlock(transform.right);
 
                             sr.flipX = true;
                         }
                         else
                         {   //Left swipe
-                            Debug.Log("Left Swipe");
                             playerManager.MoveBlock(-transform.right);
 
                             sr.flipX = false;
@@ -59,14 +57,12 @@ public class TouchManager : MonoBehaviour
                     {
                         if (lp.y > fp.y)
                         {   //Up swipe
-                            Debug.Log("Up Swipe");
                             playerManager.MoveBlock(transform.up);
 
                             sr.flipY = true;
                         }
                         else
                         {   //Down swipe
-                            Debug.Log("Down Swipe");
                             playerManager.MoveBlock(-transform.up);
 
                             sr.flipY = false;
@@ -75,7 +71,7 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Tap");
+                    // Tap on the object
                 }
             }
         }

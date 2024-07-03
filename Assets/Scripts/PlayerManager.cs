@@ -18,6 +18,8 @@ public class PlayerManager : MonoBehaviour
     private LevelManager levelManager;
     private Transform tails;
 
+    public GameManager gameManager;
+
     private void Start()
     {
         GameObject tail = new GameObject("Tails");
@@ -27,6 +29,7 @@ public class PlayerManager : MonoBehaviour
         levelManager = transform.parent.GetComponent<LevelManager>();
 
         points = levelManager.points;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void Update()
@@ -62,9 +65,11 @@ public class PlayerManager : MonoBehaviour
         if (levelManager.AllPointsCollected())
         {
             Debug.Log("It's A Win");
+            gameManager.OnDone();
         }
         else
         {
+            gameManager.OnRetry();
             Debug.Log("You Lost");
         }
     }

@@ -4,16 +4,15 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     // Max points to be collected by moving the snake to win the level
-    [SerializeField]
     private int maxPoints;
     private Transform spawanPos;
 
     public GameObject pencil;
-
-    public int takenPoints;
+    int takenPoints;
 
     public GameObject pointsPref;
 
+    [HideInInspector]
     public GameObject points;
 
     // Start is called before the first frame update
