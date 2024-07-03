@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PointSpawner : MonoBehaviour
 {
     public GameObject point;
-    RaycastHit hit;
+    RaycastHit2D hit;
 
     [SerializeField]
     private float distance = 1f;
@@ -14,37 +12,38 @@ public class PointSpawner : MonoBehaviour
 
     void Start()
     {
-        parent = GameObject.Find("Points").transform;
-
-        // Raycast in all directions
-        if (!Physics.Raycast(transform.position, Vector3.left, out hit, distance))
+        hit = Physics2D.Raycast(transform.position, Vector2.left, distance);
+        if (hit.collider == null)
         {
-            Vector3 pos = transform.position;
-            Vector3 spawnPos = new Vector3(pos.x - 1, pos.y, pos.z);
+            Vector2 pos = transform.position;
+            Vector2 spawnPos = new Vector2(pos.x - 1, pos.y);
 
             Instantiate(point, spawnPos, point.transform.rotation, parent);
         }
 
-        if (!Physics.Raycast(transform.position, Vector3.right, out hit, distance))
+        hit = Physics2D.Raycast(transform.position, Vector2.right, distance);
+        if (hit.collider == null)
         {
-            Vector3 pos = transform.position;
-            Vector3 spawnPos = new Vector3(pos.x + 1, pos.y, pos.z);
+            Vector2 pos = transform.position;
+            Vector2 spawnPos = new Vector2(pos.x + 1, pos.y);
 
             Instantiate(point, spawnPos, point.transform.rotation, parent);
         }
 
-        if (!Physics.Raycast(transform.position, Vector3.up, out hit, distance))
+        hit = Physics2D.Raycast(transform.position, Vector2.up, distance);
+        if (hit.collider == null)
         {
-            Vector3 pos = transform.position;
-            Vector3 spawnPos = new Vector3(pos.x, pos.y + 1, pos.z);
+            Vector2 pos = transform.position;
+            Vector2 spawnPos = new Vector2(pos.x, pos.y + 1);
 
             Instantiate(point, spawnPos, point.transform.rotation, parent);
         }
 
-        if (!Physics.Raycast(transform.position, Vector3.down, out hit, distance))
+        hit = Physics2D.Raycast(transform.position, Vector2.down, distance);
+        if (hit.collider == null)
         {
-            Vector3 pos = transform.position;
-            Vector3 spawnPos = new Vector3(pos.x, pos.y - 1, pos.z);
+            Vector2 pos = transform.position;
+            Vector2 spawnPos = new Vector2(pos.x, pos.y - 1);
 
             Instantiate(point, spawnPos, point.transform.rotation, parent);
         }

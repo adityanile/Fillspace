@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -21,16 +20,20 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        points = GameObject.Find("Points");
-        tails = GameObject.Find("Tails").transform;
+        GameObject tail = new GameObject("Tails");
+        tail.transform.SetParent(gameObject.transform.parent);
+        tails = tail.transform;
+
         levelManager = transform.parent.GetComponent<LevelManager>();
+
+        points = levelManager.points;
     }
 
     private void Update()
     {
         if (moveBlock)
         {
-            Vector3 dir = (finalPos - transform.position);
+            Vector2 dir = (finalPos - transform.position);
             float distance = Vector3.Distance(transform.position, finalPos);
 
             if (distance > offset)
@@ -43,24 +46,23 @@ public class PlayerManager : MonoBehaviour
                 moveBlock = false;
                 blockMovement = false;
 
-                Vector3 pos = transform.position;
-                transform.position = new Vector3(Convert.ToInt16(pos.x), Convert.ToInt16(pos.y), Convert.ToInt16(pos.z));
+                Vector2 pos = transform.position;
+                transform.position = new Vector2(Convert.ToInt16(pos.x), Convert.ToInt16(pos.y));
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.gameObject.CompareTag("Point"))
+        if (collision.gameObject.CompareTag("Point"))
         {
-            Vector3 pos = other.transform.position;
-            Destroy(other.gameObject);
+            Vector2 pos = collision.transform.position;
+            Destroy(collision.gameObject);
 
             Instantiate(tail, pos, tail.transform.rotation, tails);
             levelManager.PointTaken();
         }
     }
-
 
     public void MoveBlock(Vector3 dir)
     {
@@ -77,15 +79,12 @@ public class PlayerManager : MonoBehaviour
             {
                 if (dir == transform.right || dir == -transform.right)
                 {
-                    finalPos = new Vector3(finalPos.x + blocks, finalPos.y, finalPos.z);
+                    finalPos = new Vector2(finalPos.x + blocks, finalPos.y);
                 }
                 if (dir == transform.up || dir == -transform.up)
                 {
-                    finalPos = new Vector3(finalPos.x, finalPos.y + blocks, finalPos.z);
+                    finalPos = new Vector2(finalPos.x, finalPos.y + blocks);
                 }
-
-                // Spawing tail at start position
-                Instantiate(tail, transform.position, tail.transform.rotation, tails);
 
                 moveBlock = true;
                 blockMovement = true;
@@ -103,24 +102,25 @@ public class PlayerManager : MonoBehaviour
 
     public int GetMovableBlocks(Vector3 dir)
     {
-        RaycastHit hit;
+        RaycastHit2D hit;
         int blocks = 0;
 
-        if (Physics.Raycast(transform.position, dir, out hit, Mathf.Infinity))
+        hit = Physics2D.Raycast(transform.position, dir, Mathf.Infinity);
+        if(hit.collider != null)
         {
-                Vector3 startPos = transform.position;
-                Vector3 finalPos = hit.collider.transform.position;
+            Vector2 startPos = transform.position;
+            Vector2 finalPos = hit.collider.transform.position;
 
-                Vector3 temp = finalPos - startPos;
+            Vector2 temp = finalPos - startPos;
 
-                if (temp.x != 0)
-                {
-                    blocks = Convert.ToInt16(temp.x);
-                }
-                if (temp.y != 0)
-                {
-                    blocks = Convert.ToInt16(temp.y);
-                }
+            if (temp.x != 0)
+            {
+                blocks = Convert.ToInt16(temp.x);
+            }
+            if (temp.y != 0)
+            {
+                blocks = Convert.ToInt16(temp.y);
+            }
         }
         return (blocks < 0) ? (blocks + 1) : (blocks - 1);
     }
