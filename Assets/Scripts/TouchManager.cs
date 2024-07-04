@@ -19,6 +19,43 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
+        // Managing the Touch Controls
+        HandleTouchControl();
+
+        // Managing Keyboard Controls
+        HandleKeyboardControls();
+    }
+
+    void HandleKeyboardControls()
+    {
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            // Right Swipe
+            playerManager.MoveBlock(transform.right);
+            sr.flipX = true;
+        }
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            // Left Swipe
+            playerManager.MoveBlock(-transform.right);
+            sr.flipX = false;
+        }
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            // UP Swipe
+            playerManager.MoveBlock(transform.up);
+            sr.flipY = true;
+        }
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            // Down Swipe
+            playerManager.MoveBlock(-transform.up);
+            sr.flipY = false;
+        }
+    }
+    public void HandleTouchControl()
+    {
+        // Control for Touch Enabled Devices
         if (Input.touchCount == 1)
         {
             Touch touch = Input.GetTouch(0); // get the touch
@@ -42,30 +79,22 @@ public class TouchManager : MonoBehaviour
                     {
                         if ((lp.x > fp.x))
                         {   //Right swipe
-                            playerManager.MoveBlock(transform.right);
-
-                            sr.flipX = true;
+                            OnRightSwipe();
                         }
                         else
                         {   //Left swipe
-                            playerManager.MoveBlock(-transform.right);
-
-                            sr.flipX = false;
+                            OnLeftSwipe();
                         }
                     }
                     else
                     {
                         if (lp.y > fp.y)
                         {   //Up swipe
-                            playerManager.MoveBlock(transform.up);
-
-                            sr.flipY = true;
+                            OnUpSwipe();
                         }
                         else
                         {   //Down swipe
-                            playerManager.MoveBlock(-transform.up);
-
-                            sr.flipY = false;
+                            OnDownSwipe();
                         }
                     }
                 }
@@ -76,4 +105,26 @@ public class TouchManager : MonoBehaviour
             }
         }
     }
+
+    void OnRightSwipe()
+    {
+        playerManager.MoveBlock(transform.right);
+        sr.flipX = true;
+    }
+    void OnLeftSwipe()
+    {
+        playerManager.MoveBlock(-transform.right);
+        sr.flipX = false;
+    }
+    void OnUpSwipe()
+    {
+        playerManager.MoveBlock(transform.up);
+        sr.flipY = true;
+    }
+    void OnDownSwipe()
+    {
+        playerManager.MoveBlock(-transform.up);
+        sr.flipY = false;
+    }
+
 }

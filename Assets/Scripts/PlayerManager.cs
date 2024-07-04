@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     private Transform tails;
 
     public GameManager gameManager;
+    public SpriteRenderer sr;
 
     private void Start()
     {
@@ -30,6 +31,7 @@ public class PlayerManager : MonoBehaviour
 
         points = levelManager.points;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        sr = transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -57,6 +59,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    
     public void CheckWin()
     {
         // Player will never loose so no lose condition
