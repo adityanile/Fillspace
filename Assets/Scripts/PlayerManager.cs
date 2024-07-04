@@ -52,39 +52,19 @@ public class PlayerManager : MonoBehaviour
                 Vector2 pos = transform.position;
                 transform.position = new Vector2(Convert.ToInt16(pos.x), Convert.ToInt16(pos.y));
 
-                // Check for winning here
-                if (!IsThereSpaceToMove())
-                    CheckWin();
-
+                CheckWin();
             }
         }
     }
 
     public void CheckWin()
     {
+        // Player will never loose so no lose condition
         if (levelManager.AllPointsCollected())
         {
             Debug.Log("It's A Win");
             gameManager.OnDone();
         }
-        else
-        {
-            gameManager.OnRetry();
-            Debug.Log("You Lost");
-        }
-    }
-
-    bool IsThereSpaceToMove()
-    {
-        int up = GetMovableBlocks(transform.up);
-        int down = GetMovableBlocks(-transform.up);
-        int right = GetMovableBlocks(transform.right);
-        int left = GetMovableBlocks(-transform.right);
-
-        if (up == 0 && down == 0 && left == 0 && right == 0)
-            return false;
-        else 
-            return true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

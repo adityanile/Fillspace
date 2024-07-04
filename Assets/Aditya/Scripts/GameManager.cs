@@ -29,24 +29,19 @@ public class GameManager : MonoBehaviour
         ShowNextPainting();
     }
 
-    public void OnRetry()
-    {
-        retryBtn.SetActive(true);
-    }
-
     // Both side buttons management is done here
     public void OnDone()
     {
         confettiEffect.SetActive(true);
         StartCoroutine(AfterAnimation());
+
+        retryBtn.SetActive(false);
     }
 
     public void OnClickRetry()
     {
         DestroyImmediate(currentPainting, true);
         currentPainting = Instantiate(currentPref, new Vector2(0, 0), currentPref.transform.rotation);
-
-        retryBtn.SetActive(false);
     }
 
     public void OnClickNext()
@@ -68,6 +63,8 @@ public class GameManager : MonoBehaviour
     {
         if (index < paintings.Count)
         {
+            retryBtn.SetActive(true);
+
             lastPainting = (index == 0) ? null : currentPainting;
             currentPainting = paintings[index];
 
@@ -82,7 +79,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("Game Completed");
-            SceneManager.LoadScene(0);
+            nextBtn.SetActive(false);
         }
     }
 }
